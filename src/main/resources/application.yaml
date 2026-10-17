@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: spring-auth-practice
@@ -28,6 +29,19 @@ spring:
       enabled: true
     livereload:
       enabled: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
 jwt:
   secret: ${JWT_SECRET}
