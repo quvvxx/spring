@@ -20,7 +20,7 @@ public class User {
     @Column(nullable = false, length = 10, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
@@ -32,6 +32,18 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public static User createGoogle(String email, String username, Role role){
+        return User.builder()
+                .email(email)
+                .username(username)
+                .role(role)
+                .build();
+    }
+
+    public void changeUsername(String username){
+        this.username = username;
     }
 
 }
