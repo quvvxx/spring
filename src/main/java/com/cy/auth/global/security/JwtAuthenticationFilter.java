@@ -2,6 +2,7 @@ package com.cy.auth.global.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private static final String ACCESS_TOKEN = "access_token";
 
     @Override
     protected void doFilterInternal(
@@ -41,6 +43,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(authorization != null && authorization.startsWith("Bearer ")) {
             return authorization.substring(7);
         }
+
+        Cookie cookies[] = request.getCookies();
+
+        if (cookies == null) return null;
+
+        for (Cookie cookie : cookies) {
+            if (ACCESS_TOKEN.equals(cookie.getName())) return cookie.getValue();
+        }
+
         return null;
     }
 }
